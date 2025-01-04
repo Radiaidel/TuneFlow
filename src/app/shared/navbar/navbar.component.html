@@ -33,7 +33,7 @@
         </button>
 
         <button
-            (click)="activeTab = 'add'"
+            (click)="activeTab = 'add' ; toggleFormVisibility()"
             class="flex flex-col items-center justify-center w-20 h-16 transition-all duration-300 transform"
             [ngClass]="{'text-green-600 scale-110 -translate-y-6': activeTab === 'add', 'text-gray-500': activeTab !== 'add'}">
             <div class="p-2 w-10 rounded-full transition-all duration-300"

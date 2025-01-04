@@ -1,14 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [NgClass , RouterLink ],
+  imports: [CommonModule, NgClass, RouterLink],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
   activeTab: string = 'home';
-  
+
+  @Output() isFormVisible: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  toggleFormVisibility() {
+    this.isFormVisible.emit(true);
+  }
 }

@@ -1,4 +1,10 @@
+<!-- app.component.html -->
 <div class="app-container">
-    <app-navbar></app-navbar>
+  <app-navbar (isFormVisible)="handleFormVisibilityChange($event)"></app-navbar>
+ 
   <router-outlet></router-outlet>
+  <app-track-form
+  *ngIf="isFormVisible"
+  (formVisibilityChange)="handleFormVisibilityChange($event)">
+</app-track-form>
 </div>
