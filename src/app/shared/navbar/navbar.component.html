@@ -1,0 +1,49 @@
+<div class="fixed left-[50%] bottom-4 transform -translate-x-1/2">
+    <div
+        class="flex mx-auto justify-center items-center bg-black rounded-full ">
+        <button
+        routerLink="/play"
+        (click)="activeTab = 'play'"
+        class="flex flex-col items-center justify-center w-20 h-16  transition-all duration-300 transform"
+        [ngClass]="{'text-green-600 scale-110 -translate-y-6': activeTab === 'play', 'text-gray-500': activeTab !== 'play'}">
+        <div class="p-2 w-10 rounded-full transition-all duration-300"
+            [ngClass]="{'bg-green-600 text-white': activeTab === 'play', 'bg-transparent': activeTab !== 'play'}">
+            <i class="fa-solid fa-play text-xl"></i>
+        </div>
+        <span class="text-xs mt-1"
+            [ngClass]="{'opacity-100': activeTab === 'play', 'opacity-0 h-0': activeTab !== 'play'}">
+            Play
+        </span>
+    </button>
+
+        <button
+            
+            routerLink="/home"
+            (click)="activeTab = 'home'"
+            class="flex flex-col items-center justify-center w-20 h-16 transition-all duration-300 transform"
+            [ngClass]="{'text-green-600 scale-110 -translate-y-6': activeTab === 'home', 'text-gray-500': activeTab !== 'home'}">
+            <div class="p-2 rounded-full transition-all duration-300"
+                [ngClass]="{'bg-green-600 text-white': activeTab === 'home', 'bg-transparent': activeTab !== 'home'}">
+                <i class="fas fa-home text-xl"></i>
+            </div>
+            <span class="text-xs mt-1"
+                [ngClass]="{'opacity-100': activeTab === 'home', 'opacity-0 h-0': activeTab !== 'home'}">
+                Home
+            </span>
+        </button>
+
+        <button
+            (click)="activeTab = 'add'"
+            class="flex flex-col items-center justify-center w-20 h-16 transition-all duration-300 transform"
+            [ngClass]="{'text-green-600 scale-110 -translate-y-6': activeTab === 'add', 'text-gray-500': activeTab !== 'add'}">
+            <div class="p-2 w-10 rounded-full transition-all duration-300"
+                [ngClass]="{'bg-green-600 text-white': activeTab === 'add', 'bg-transparent': activeTab !== 'add'}">
+                <i class="fas fa-plus text-xl"></i>
+            </div>
+            <span class="text-xs mt-1"
+                [ngClass]="{'opacity-100': activeTab === 'add', 'opacity-0 h-0': activeTab !== 'add'}">
+                Add
+            </span>
+        </button>
+    </div>
+</div>
