@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Track } from '../../models/track.model';
 import { CommonModule } from '@angular/common';
 import { IndexedDBService } from '../../services/indexeddb.service';
+import { TrackCardComponent } from '../track-card/track-card.component';
+import { SearchComponent } from '../../shared/search/search.component';
 
 @Component({
   selector: 'app-track-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TrackCardComponent , SearchComponent],
   templateUrl: './track-list.component.html',
   styleUrls: ['./track-list.component.scss'],
 })
