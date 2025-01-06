@@ -3,8 +3,9 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
-import { TrackReducer } from './store/reducers/track.reducer.reducer';
+import { trackReducer } from './store/reducers/track.reducer.reducer';
+import { provideEffects } from '@ngrx/effects';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideStore({ track: TrackReducer })]
+  providers: [provideRouter(routes), provideStore({ track: trackReducer }), provideEffects()]
 };

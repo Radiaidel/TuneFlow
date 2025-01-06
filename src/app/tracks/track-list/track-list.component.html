@@ -1,4 +1,13 @@
 <div class="w-full max-w-2xl m-auto bg-black p-4">
+
+
+    <div *ngIf="track">
+        <audio [src]="audioUrl" controls></audio>
+        <button (click)="playAudio()">Play</button>
+      </div>
+      
+
+
     <div class="flex items-center justify-between p-3 hover:bg-slate-700/50 rounded-lg cursor-pointer group">
       <div class="flex items-center space-x-4">
         <span class="text-gray-400 w-6">1</span>

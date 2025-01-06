@@ -1,14 +1,14 @@
 <div class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-black/90 rounded-3xl border border-green-500/20 shadow-2xl shadow-green-500/10 transform transition-all">
-      <form [formGroup]="trackForm" class="p-6" >
-        <div class="mb-6 text-center relative">
-          <h2 class="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">Add New Track</h2>
-          <button type="button" (click)="closeForm()" class="absolute top-0 right-0 text-gray-400 hover:text-green-500">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+        <form [formGroup]="trackForm" class="p-6" (ngSubmit)="onSubmit()">
+            <div class="mb-6 text-center relative">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">Add New Track</h2>
+                <button type="button" (click)="closeForm()" class="absolute top-0 right-0 text-gray-400 hover:text-green-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
   
         <div class="mb-6">
           <div class="relative group cursor-pointer w-32 h-32 mx-auto rounded-xl overflow-hidden border-2 border-dashed border-green-500/50 hover:border-green-500 transition-colors">
@@ -37,7 +37,7 @@
           </div>
                 <div
                     class="relative p-3 bg-black/50 border border-green-500/20 rounded-lg group hover:border-green-500 transition-all">
-                    <input #audioInput
+                    <input #audioInput 
                         type="file"
                         accept="audio/*"
                         (change)="onAudioSelected($event)"
@@ -79,7 +79,7 @@
           </div>
 
   
-          <button type="submit" [disabled]="!trackForm.valid" class="w-full bg-green-500 text-black text-sm font-bold py-2 px-4 rounded-lg hover:bg-green-600 transform hover:scale-[1.02] transition-all duration-200 shadow-lg shadow-green-500/20">Upload Track</button>
+          <button type="submit"  class="w-full bg-green-500 text-black text-sm font-bold py-2 px-4 rounded-lg hover:bg-green-600 transform hover:scale-[1.02] transition-all duration-200 shadow-lg shadow-green-500/20">Upload Track</button>
         </div>
       </form>
     </div>
