@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,13 @@ export class TrackFormComponent  {
   audioBlob: Blob | null = null;
   audioUrl: string | null = null;   
   @Output() formVisibilityChange = new EventEmitter<boolean>();
+  @Output() submitFormEdit: EventEmitter<Track> = new EventEmitter<Track>();
 
+
+  @Input() trackToEdit: Track | null = null;
+  @Output() onCloseForm = new EventEmitter<void>();
+  @Output() submitForm = new EventEmitter<Track>();
+  
 
   constructor(
     private fb: FormBuilder, 
@@ -126,5 +132,15 @@ export class TrackFormComponent  {
         resolve('0:00');
       });
     });
+  }
+
+  onSubmitEdit(): void {
+    if (this.trackToEdit) {
+      this.submitFormEdit.emit(this.trackToEdit);
+    }
+  }
+
+  onClose(): void {
+    this.onCloseForm.emit();
   }
 }

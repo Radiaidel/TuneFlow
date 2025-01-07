@@ -16,13 +16,13 @@ export const trackReducer = createReducer(
     ...state,
     tracks: [...state.tracks, track]
   })),
-  on(TrackActions.updateTrack, (state, { track }) => ({
+  on(TrackActions.deleteTrackSuccess, (state, { trackId }) => ({
     ...state,
-    tracks: state.tracks.map(t => (t.id === track.id ? track : t))
+    tracks: state.tracks.filter(track => track.id !== trackId)
   })),
-  on(TrackActions.deleteTrack, (state, { id }) => ({
+  on(TrackActions.updateTrackSuccess, (state, { track }) => ({
     ...state,
-    tracks: state.tracks.filter(t => t.id !== id)
+    tracks: state.tracks.map(t => t.id === track.id ? track : t)
   })),
   on(TrackActions.loadTracks, (state, { tracks }) => ({
     ...state,

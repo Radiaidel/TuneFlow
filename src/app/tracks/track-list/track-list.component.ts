@@ -4,18 +4,22 @@ import { CommonModule, NgForOf } from '@angular/common';
 import { IndexedDBService } from '../../services/indexeddb.service';
 import { TrackCardComponent } from '../track-card/track-card.component';
 import { SearchComponent } from '../../shared/search/search.component';
-import { loadTracks } from '../../store/actions/track.actions.actions';
+import { loadTracks , deleteTrack, deleteTrackSuccess, updateTrack,updateTrackSuccess } from '../../store/actions/track.actions.actions';
 import { Store } from '@ngrx/store';
 import { TrackState } from '../../store/reducers/track.reducer.reducer';
+import { TrackFormComponent } from '../track-form/track-form.component';
+
 
 @Component({
   selector: 'app-track-list',
   standalone: true,
-  imports: [CommonModule, TrackCardComponent, SearchComponent, NgForOf],
+  imports: [CommonModule, TrackCardComponent, SearchComponent, NgForOf , TrackFormComponent],
   templateUrl: './track-list.component.html',
 })
 export class TrackListComponent implements OnInit {
   tracks$ = this.store.select(state => state.track.tracks);
+  showEditForm = false;
+  selectedTrack: Track | null = null;
 
   constructor(
     private store: Store<{ track: TrackState }>,
@@ -28,24 +32,31 @@ export class TrackListComponent implements OnInit {
     });
   }
 
-  deleteTrack(id: string) {
-    // this.indexedDBService.deleteTrack(id).subscribe({
-    //   next: () => {
-    //     this.store.dispatch(deleteTrack({ id }));
-    //   },
-    //   error: (error) => {
-    //     console.error('Error deleting track', error);
-    //   }
-    // });
+  onDeleteTrack(trackId: string) {
+    if (confirm('Are you sure you want to delete this track?')) {
+      this.store.dispatch(deleteTrack({ trackId }));
+      this.indexedDBService.deleteTrack(trackId).subscribe(() => {
+        this.store.dispatch(deleteTrackSuccess({ trackId }));
+      });
+    }
   }
-  editTrack(event: Track) {
-    // this.indexedDBService.getTrack(id).subscribe({
-    //   next: (track) => {
-    //     this.store.dispatch(updateTrack({ track }));
-    //   },
-    //   error: (error) => {
-    //     console.error('Error updating track', error);
-    //   }
+
+  onEditTrack(track: Track) {
+    this.selectedTrack = { ...track };
+    this.showEditForm = true;
+  }
+
+  onCloseForm() {
+    this.showEditForm = false;
+    this.selectedTrack = null;
+  }
+
+  onUpdateTrack(track: Track) {
+    this.store.dispatch(updateTrack({ track }));
+    this.indexedDBService.updateTrack(track).subscribe(() => {
+      this.store.dispatch(updateTrackSuccess({ track }));
+      this.onCloseForm();
+    });
   }
   
 }

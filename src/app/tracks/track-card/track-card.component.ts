@@ -9,15 +9,13 @@ import { AudioPlayerService } from '../../services/audio-player.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './track-card.component.html',
-  styleUrls: ['./track-card.component.scss']  
 })
 export class TrackCardComponent {
-
   @Input() track!: Track;
   @Input() index!: number;
-  @Output() onDelete = new EventEmitter<string>();
-  @Output() onEdit = new EventEmitter<Track>();
-
+  @Output() onDelete = new EventEmitter<string>();  
+  @Output() onEdit = new EventEmitter<Track>();     
+ 
   constructor(
     private audioPlayerService: AudioPlayerService,
     private router: Router  
@@ -29,9 +27,16 @@ export class TrackCardComponent {
 
   playTrack(track: Track) {
     console.log('Playing track', track);
-
     this.router.navigate(['/play']).then(() => {
       this.audioPlayerService.playTrack(track);
     });
+  }
+
+  onDeleteTrack() {
+    this.onDelete.emit(this.track.id);
+  }
+
+  onEditTrack() {
+    this.onEdit.emit(this.track);
   }
 }
