@@ -1,12 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Track } from '../../models/track.model';
+import { Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
+import { AudioPlayerService } from '../../services/audio-player.service';
+
 @Component({
   selector: 'app-track-card',
   standalone: true,
-  imports: [CommonModule ],
+  imports: [CommonModule],
   templateUrl: './track-card.component.html',
-  styleUrl: './track-card.component.scss'
+  styleUrls: ['./track-card.component.scss']  
 })
 export class TrackCardComponent {
 
@@ -15,8 +18,20 @@ export class TrackCardComponent {
   @Output() onDelete = new EventEmitter<string>();
   @Output() onEdit = new EventEmitter<Track>();
 
+  constructor(
+    private audioPlayerService: AudioPlayerService,
+    private router: Router  
+  ) {}
+
   formatIndex(index: number): string {
     return index.toString().padStart(2, '0');
   }
-  playTrack(){}
+
+  playTrack(track: Track) {
+    console.log('Playing track', track);
+
+    this.router.navigate(['/play']).then(() => {
+      this.audioPlayerService.playTrack(track);
+    });
+  }
 }

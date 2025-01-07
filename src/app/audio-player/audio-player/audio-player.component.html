@@ -1,71 +1,103 @@
-<div class="bg-black/60 backdrop-blur-sm p-6 rounded-3xl max-w-sm mx-auto border border-green-500/20 shadow-lg shadow-green-500/10">
-    <div class="flex justify-center mb-6">
-      <div class="relative group">
-        <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-black/40 rounded-full animate-spin-slow"></div>
-        <div class="w-48 h-48 rounded-full overflow-hidden animate-spin-slow border-4 border-green-500/30 shadow-lg shadow-green-500/20">
-          <img src="https://i.scdn.co/image/ab67616d00001e0254627615ea059d2096a75116" alt="Album Cover" class="w-full h-full object-cover">
-        </div>
+<div
+  class="bg-black/60 backdrop-blur-sm p-6 rounded-3xl max-w-sm mx-auto border border-green-500/20 shadow-lg shadow-green-500/10">
+  <div class="flex justify-center mb-6">
+    <div class="relative group">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-black/40 rounded-full animate-spin-slow"></div>
+      <div
+        class="w-48 h-48 rounded-full overflow-hidden animate-spin-slow border-4 border-green-500/30 shadow-lg shadow-green-500/20">
+        <img [src]="currentTrack?.coverImage" alt="Album Cover"
+          class="w-full h-full object-cover">
       </div>
     </div>
-  
-    <div class="text-white text-center mb-4">
-      <h3 class="text-xl font-bold mb-1">Brooklyn Bridge To Chorus</h3>
-      <p class="text-gray-400 text-sm">Artist Name</p>
+  </div>
+
+  <div class="text-white text-center mb-4">
+    <h3 class="text-xl font-bold mb-1">{{ currentTrack?.title }}</h3>
+    <p class="text-gray-400 text-sm">{{ currentTrack?.artist }}</p>
+  </div>
+
+  <div class="relative mb-3">
+    <input
+      type="range"
+      class="progress-slider w-full h-1.5 rounded-full cursor-pointer"
+      min="0"
+      [max]="duration"
+      [value]="currentTime"
+      (input)="seekAudio($event)">
+    <div class="flex justify-between text-xs text-gray-400 mt-1">
+      <span>{{ formatTime(currentTime) }}</span>
+      <span>{{ formatTime(duration) }}</span>
     </div>
+  </div>
   
-    <div class="relative mb-3">
-      <div class="h-1.5 bg-gray-600/50 rounded-full">
-        <div class="h-1.5 bg-green-500 rounded-full w-[40%]"></div>
-      </div>
-      <div class="flex justify-between text-xs text-gray-400 mt-1">
-        <span>2:09</span>
-        <span>5:23</span>
-      </div>
-    </div>
+  <div class="flex justify-center items-center gap-6 mb-4">
+    <button class="text-gray-400 hover:text-green-500 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
+    </button>
+
+    <button class="text-gray-400 hover:text-green-500 transition-colors"
+      (click)="prevTrack()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor"
+        [ngClass]="isPlaying ? 'pause-icon' : 'play-icon'">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <button
+    class="bg-green-500 rounded-full p-3 hover:bg-green-600 transform hover:scale-105 transition-all shadow-lg shadow-green-500/20"
+    (click)="playPauseTrack()">
+    <svg *ngIf="!isPlaying" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-black"
+      fill="currentColor" viewBox="0 0 24 24">
+      <path d="M5 3v18l15-9L5 3z" />
+    </svg>
+    <svg *ngIf="isPlaying" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-black"
+      fill="currentColor" viewBox="0 0 24 24">
+      <rect x="6" y="4" width="4" height="16" />
+      <rect x="14" y="4" width="4" height="16" />
+    </svg>
+  </button>
   
-    <div class="flex justify-center items-center gap-6 mb-4">
-      <button class="text-gray-400 hover:text-green-500 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-        </svg>
-      </button>
+
+    <button (click)="nextTrack()"
+      class="text-gray-400 hover:text-green-500 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    <button class="text-gray-400 hover:text-green-500 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex items-center gap-4 px-4">
+    <button class="text-gray-400 hover:text-green-500 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+      </svg>
+    </button>
   
-      <button class="text-gray-400 hover:text-green-500 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-        </svg>
-      </button>
-  
-      <button class="bg-green-500 rounded-full p-3 hover:bg-green-600 transform hover:scale-105 transition-all shadow-lg shadow-green-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-black" fill="currentColor" viewBox="0 0 24 24">
-          <rect x="6" y="4" width="4" height="16"/>
-          <rect x="14" y="4" width="4" height="16"/>
-        </svg>
-      </button>
-  
-      <button class="text-gray-400 hover:text-green-500 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-        </svg>
-      </button>
-  
-      <button class="text-gray-400 hover:text-green-500 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-      </button>
-    </div>
-  
-    <div class="flex items-center gap-4 px-4">
-      <button class="text-gray-400 hover:text-green-500 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-        </svg>
-      </button>
-      <div class="flex-1">
-        <div class="h-1.5 bg-gray-600/50 rounded-full">
-          <div class="h-1.5 bg-green-500 rounded-full w-[70%]"></div>
-        </div>
-      </div>
-    </div>
+    <input 
+      class="volume-slider h-1.5 rounded-full w-[70%] cursor-pointer" 
+      type="range" 
+      min="0" 
+      max="1" 
+      step="0.01" 
+      [value]="volume"
+      (input)="setVolume($event)" 
+    />
+</div>
 </div>

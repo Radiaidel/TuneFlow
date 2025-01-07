@@ -108,4 +108,14 @@
         })
       );
     }
+    getAudioFile(trackId: string): Observable<AudioFile | undefined> {
+      return from(
+        this.dbPromise.then(async (db) => {
+          const tx = db.transaction('audioFiles', 'readonly');
+          const audioFileStore = tx.objectStore('audioFiles');
+          return await audioFileStore.get(trackId);
+        })
+      );
+    }
+    
   }
