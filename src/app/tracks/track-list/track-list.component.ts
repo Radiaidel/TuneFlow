@@ -1,51 +1,51 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Track } from '../../models/track.model';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgForOf } from '@angular/common';
 import { IndexedDBService } from '../../services/indexeddb.service';
 import { TrackCardComponent } from '../track-card/track-card.component';
 import { SearchComponent } from '../../shared/search/search.component';
+import { loadTracks } from '../../store/actions/track.actions.actions';
+import { Store } from '@ngrx/store';
+import { TrackState } from '../../store/reducers/track.reducer.reducer';
 
 @Component({
   selector: 'app-track-list',
   standalone: true,
-  imports: [CommonModule , TrackCardComponent , SearchComponent],
+  imports: [CommonModule, TrackCardComponent, SearchComponent, NgForOf],
   templateUrl: './track-list.component.html',
-  styleUrls: ['./track-list.component.scss'],
 })
-export class TrackListComponent implements OnInit, OnDestroy {
-  audioUrl: string | null = null;
-  track: Track | null = null;
-  private audio: HTMLAudioElement | null = null;
+export class TrackListComponent implements OnInit {
+  tracks$ = this.store.select(state => state.track.tracks);
 
-  constructor(private indexedDBService: IndexedDBService) {}
+  constructor(
+    private store: Store<{ track: TrackState }>,
+    private indexedDBService: IndexedDBService
+  ) {}
 
-  ngOnInit(): void {
-    const trackId = 'kp748dhy7m';
-    this.indexedDBService.getTrackById(trackId).subscribe({
-      next: (track) => {
-        if (track?.audio) {
-          this.track = track;
-          this.audioUrl = URL.createObjectURL(track.audio);
-          this.audio = new Audio(this.audioUrl);
-        }
-      },
-      error: (err) => console.error('Error fetching track:', err),
+  ngOnInit() {
+    this.indexedDBService.getAllTracks().subscribe(tracks => {
+      this.store.dispatch(loadTracks({ tracks }));
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.audioUrl) {
-      URL.revokeObjectURL(this.audioUrl);
-    }
-    if (this.audio) {
-      this.audio.pause();
-      this.audio = null;
-    }
+  deleteTrack(id: string) {
+    // this.indexedDBService.deleteTrack(id).subscribe({
+    //   next: () => {
+    //     this.store.dispatch(deleteTrack({ id }));
+    //   },
+    //   error: (error) => {
+    //     console.error('Error deleting track', error);
+    //   }
+    // });
   }
-
-  playAudio(): void {
-    if (this.audio) {
-      this.audio.play().catch(err => console.error('Error playing audio:', err));
-    }
+  editTrack(event: Track) {
+    // this.indexedDBService.getTrack(id).subscribe({
+    //   next: (track) => {
+    //     this.store.dispatch(updateTrack({ track }));
+    //   },
+    //   error: (error) => {
+    //     console.error('Error updating track', error);
+    //   }
   }
+  
 }

@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
-import { TrackService } from '../../services/track.service';
-import { loadTracks, loadTracksSuccess } from '../actions/track.actions.actions';
+import { mergeMap, map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import * as TrackActions from '../actions/track.actions.actions';
+import { IndexedDBService } from '../../services/indexeddb.service';
 
 @Injectable()
 export class TracksEffects {
-//   constructor(private actions$: Actions, private tracksService: TrackService) {}
+  loadTracks$ = createEffect(() => 
+    this.actions$.pipe(
+      ofType('[Track] Load Tracks Request'),
+      mergeMap(() => this.indexedDBService.getAllTracks()
+        .pipe(
+          map(tracks => TrackActions.loadTracksSuccess({ tracks })),
+          catchError(error => of({ type: '[Track] Load Tracks Error', error }))
+        ))
+    )
+  );
 
-//   loadTracks$ = createEffect(() =>
-//     this.actions$.pipe(
-//       ofType(loadTracks),
-//       mergeMap(() =>
-//         this.tracksService.getTracks().pipe(
-//           map((tracks) => loadTracksSuccess({ tracks }))
-//         )
-//       )
-//     )
-//   );
+  constructor(
+    private actions$: Actions,
+    private indexedDBService: IndexedDBService
+  ) {}
 }

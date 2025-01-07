@@ -69,41 +69,62 @@ export class TrackFormComponent  {
     }
   }
   
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.trackForm.valid && this.audioBlob) {
       const { title, artist, genre } = this.trackForm.value;
+      const duration = await this.calculateDuration(this.audioBlob);
       const newTrack: Track = {
-        id: Math.random().toString(36).substring(2), 
+        id: Math.random().toString(36).substring(2),
         title,
         artist,
         description: 'Some description',
-        duration: '4:00',
+        duration,
         category: MusicCategory[genre.toUpperCase() as keyof typeof MusicCategory],
         createdAt: new Date(),
         audio: this.audioBlob,
         coverImage: this.imagePreview as string,
       };
 
-      this.store.dispatch(addTrack({ track: newTrack }));
-
       this.indexedDBService.addTrack(newTrack).subscribe({
-        next: (track) => {
-          console.log('Track saved to IndexedDB', track);
+        next: (savedTrack) => {
+          this.store.dispatch(addTrack({ track: savedTrack }));
+          this.resetForm();
         },
         error: (error) => {
-          console.error('Error saving track to IndexedDB', error);
+          console.error('Error saving track', error);
         },
       });
-
-      this.trackForm.reset();
-      this.imagePreview = null;
-      this.audioFileName = '';
-      this.audioBlob = null;
     }
+  }
+
+  private resetForm(): void {
+    this.trackForm.reset();
+    this.imagePreview = null;
+    this.audioFileName = '';
+    this.audioBlob = null;
+    this.closeForm();
   }
 
   closeForm(): void {
     this.formVisibilityChange.emit(false);
   }
 
+  private calculateDuration(audioBlob: Blob): Promise<string> {
+    return new Promise((resolve) => {
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      
+      audio.addEventListener('loadedmetadata', () => {
+        const minutes = Math.floor(audio.duration / 60);
+        const seconds = Math.floor(audio.duration % 60);
+        URL.revokeObjectURL(audioUrl);
+        resolve(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+      });
+      
+      audio.addEventListener('error', () => {
+        URL.revokeObjectURL(audioUrl);
+        resolve('0:00');
+      });
+    });
+  }
 }
