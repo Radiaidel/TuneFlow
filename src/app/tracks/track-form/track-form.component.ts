@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NgIf } from '@angular/common';
 import { IndexedDBService } from '../../services/indexeddb.service';
 import { Store } from '@ngrx/store';
-import { Track,MusicCategory } from '../../models/track.model';
+import { Track } from '../../models/track.model';
 import { addTrack } from '../../store/actions/track.actions.actions';
 
 @Component({
@@ -85,7 +85,7 @@ export class TrackFormComponent  {
         artist,
         description: 'Some description',
         duration,
-        category: MusicCategory[genre.toUpperCase() as keyof typeof MusicCategory],
+        category: genre,
         createdAt: new Date(),
         audio: this.audioBlob,
         coverImage: this.imagePreview as string,

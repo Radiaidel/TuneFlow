@@ -104,7 +104,7 @@ export class AudioPlayerService {
   setCurrentTime(value: number) {
     this.audio.currentTime = value;
   }
-  seek(time: number) {
+   seek(time: number) {
     if (this.audio && !isNaN(time) && isFinite(time)) {
       this.audio.currentTime = time;
     }

@@ -1,4 +1,4 @@
-import { Track, MusicCategory } from '../models/track.model';
+import { Track } from '../models/track.model';
 
 export interface AudioState {
   currentTrack: Track | null;
@@ -9,5 +9,5 @@ export interface AudioState {
   duration: number;
   playbackState: 'playing' | 'paused' | 'buffering' | 'stopped' | 'loading' | 'error';
   error: string | null;
-  currentCategory: MusicCategory | null;
+  currentCategory: String | null;
 }

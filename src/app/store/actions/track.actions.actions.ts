@@ -23,3 +23,8 @@ export const updateTrackSuccess = createAction(
     '[Track] Update Track Success',
     props<{ track: Track }>()
 );
+
+export const searchTracks = createAction(
+    '[Track] Search Tracks',
+    props<{ query: string }>()
+  );

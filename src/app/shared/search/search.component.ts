@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Observable, from } from 'rxjs';
+import { Track } from '../../models/track.model';
 
 @Component({
   selector: 'app-search',
@@ -8,5 +10,9 @@ import { Component } from '@angular/core';
   styleUrl: './search.component.scss'
 })
 export class SearchComponent {
+  @Output() search = new EventEmitter<string>();
 
+  onSearch(value: string) {
+    this.search.emit(value);
+  }
 }

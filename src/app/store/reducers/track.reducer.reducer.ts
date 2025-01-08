@@ -1,13 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 import * as TrackActions from '../actions/track.actions.actions';
 import { Track } from '../../models/track.model';
+import { searchTracks } from '../actions/track.actions.actions';
 
 export interface TrackState {
   tracks: Track[];
+  searchQuery: string;
 }
 
 export const initialState: TrackState = {
-  tracks: []
+  tracks: [],
+    searchQuery: ''
 };
 
 export const trackReducer = createReducer(
@@ -27,5 +30,9 @@ export const trackReducer = createReducer(
   on(TrackActions.loadTracks, (state, { tracks }) => ({
     ...state,
     tracks
+  })),
+  on(searchTracks, (state, { query }) => ({ 
+    ...state, 
+    searchQuery: query 
   }))
 );
