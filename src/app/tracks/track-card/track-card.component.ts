@@ -22,8 +22,12 @@ export class TrackCardComponent {
   ) {}
 
   formatIndex(index: number): string {
+    if (index === undefined || index === null) {
+      return '00'; 
+    }
     return index.toString().padStart(2, '0');
   }
+  
 
   playTrack(track: Track) {
     console.log('Playing track', track);

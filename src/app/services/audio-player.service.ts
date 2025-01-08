@@ -24,14 +24,16 @@ export class AudioPlayerService {
   }
 
   private initializeAudioEvents() {
-    this.audio.addEventListener('ended', () => {
-      this.nextTrack();
-    });
+    this.audio.addEventListener('ended', this.handleTrackEnded.bind(this));
 
     this.audio.addEventListener('error', (e) => {
       console.error('Audio error:', e);
       this.isPlayingSubject.next(false);
     });
+  }
+
+  private handleTrackEnded() {
+    this.nextTrack();
   }
 
   private loadTracks() {
@@ -55,6 +57,7 @@ export class AudioPlayerService {
         await this.audio.play();
         this.currentTrackSubject.next(track);
         this.isPlayingSubject.next(true);
+        this.currentTrackIndex = this.trackListSubject.value.findIndex(t => t.id === track.id);
       }
     } catch (error) {
       console.error('Error playing track:', error);
@@ -104,9 +107,11 @@ export class AudioPlayerService {
   setCurrentTime(value: number) {
     this.audio.currentTime = value;
   }
-   seek(time: number) {
+
+  seek(time: number) {
     if (this.audio && !isNaN(time) && isFinite(time)) {
       this.audio.currentTime = time;
     }
   }
 }
+

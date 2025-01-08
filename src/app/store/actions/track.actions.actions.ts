@@ -28,3 +28,8 @@ export const searchTracks = createAction(
     '[Track] Search Tracks',
     props<{ query: string }>()
   );
+
+  export const loadTracksError = createAction(
+    '[Track] Load Tracks Error',
+    props<{ error: any }>()
+  );

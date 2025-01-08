@@ -1,10 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { TrackFormComponent } from "./tracks/track-form/track-form.component";
+import { CommonModule } from '@angular/common';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [
+        AppComponent,
+        RouterTestingModule,
+        NavbarComponent,
+        TrackFormComponent,
+        CommonModule
+      ]
     }).compileComponents();
   });
 
@@ -22,7 +32,7 @@ describe('AppComponent', () => {
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+    fixture.detectChanges(); // Assurez-vous que la détection des changements a lieu
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('Hello, TuneFlow');
   });
