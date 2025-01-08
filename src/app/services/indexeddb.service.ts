@@ -106,6 +106,8 @@ export class IndexedDBService {
       })
     );
   }
+
+  
   getAudioFile(trackId: string): Observable<AudioFile | undefined> {
     return from(
       this.dbPromise.then(async (db) => {

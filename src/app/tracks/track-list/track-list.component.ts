@@ -33,9 +33,15 @@ export class TrackListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // this.indexedDBService.getAllTracks().subscribe(tracks => {
+    //   this.store.dispatch(loadTracks({ tracks }));
+    // });
+
     this.indexedDBService.getAllTracks().subscribe(tracks => {
+      tracks = tracks.filter(track => track.title && track.category);
       this.store.dispatch(loadTracks({ tracks }));
     });
+    
   }
 
   filterTracks(searchTerm: string) {
@@ -43,10 +49,13 @@ export class TrackListComponent implements OnInit {
     this.filteredTracks$ = this.tracks$.pipe(
       map(tracks => tracks.filter(track => 
         track.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        track.category.toLowerCase().includes(searchTerm.toLowerCase())
+        (track.category && track.category.toLowerCase().includes(searchTerm.toLowerCase()))  // Vérification de track.category
       ))
     );
   }
+
+
+  
   onDeleteTrack(trackId: string) {
     if (confirm('Are you sure you want to delete this track?')) {
       this.store.dispatch(deleteTrack({ trackId }));
@@ -72,6 +81,8 @@ export class TrackListComponent implements OnInit {
       this.store.dispatch(updateTrackSuccess({ track }));
       this.onCloseForm();
     });
-  }
+    }
+
+
   
 }
