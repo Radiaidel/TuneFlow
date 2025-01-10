@@ -75,7 +75,7 @@ npm >= 9.x
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/your-username/tuneflow.git
+git clone https://github.com/Radiaidel/tuneflow.git
 
 # Install dependencies
 cd tuneflow
